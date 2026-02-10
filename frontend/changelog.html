@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Changelog - HR System</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background: #f5f7fa; color: #333; line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 20px; }
+        header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px 20px; border-radius: 0 0 20px 20px; margin-bottom: 30px; }
+        .version-card { background: white; border-radius: 10px; padding: 25px; margin-bottom: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.08); border-left: 5px solid #667eea; }
+        .version-title { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .version-tag { background: #667eea; color: white; padding: 5px 15px; border-radius: 20px; font-size: 0.9em; }
+        .status { display: inline-block; padding: 3px 10px; border-radius: 15px; font-size: 0.8em; font-weight: bold; margin-left: 10px; }
+        .status-dev { background: #fff3cd; color: #856404; }
+        .status-prod { background: #d4edda; color: #155724; }
+        .features { margin: 15px 0; }
+        .feature-item { padding: 8px 0; border-bottom: 1px solid #eee; }
+        .feature-item:last-child { border-bottom: none; }
+        .feature-type { font-weight: bold; margin-right: 10px; }
+        .feature-added { color: #28a745; }
+        .feature-fixed { color: #dc3545; }
+        .feature-improved { color: #17a2b8; }
+        .back-btn { display: inline-block; background: #667eea; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; margin-top: 20px; }
+        .progress-bar { height: 8px; background: #e9ecef; border-radius: 4px; margin: 10px 0; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, #667eea, #764ba2); border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>📝 Changelog - HR System</h1>
+            <p>Registro de cambios y progreso del desarrollo</p>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="version-card">
+            <div class="version-title">
+                <h2>v1.1.0 - Sistema de Vacaciones</h2>
+                <div>
+                    <span class="version-tag">Próximo Lanzamiento</span>
+                    <span class="status status-dev">En Desarrollo</span>
+                </div>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 70%"></div>
+            </div>
+            <p><strong>Progreso:</strong> 70% | <strong>Estimado:</strong> Febrero 2024</p>
+            <div class="features">
+                <div class="feature-item">
+                    <span class="feature-type feature-added">➕</span>
+                    Solicitud y aprobación de vacaciones
+                </div>
+                <div class="feature-item">
+                    <span class="feature-type feature-added">➕</span>
+                    Calendario de ausencias del equipo
+                </div>
+                <div class="feature-item">
+                    <span class="feature-type feature-improved">✨</span>
+                    Mejoras en el dashboard de empleados
+                </div>
+            </div>
+        </div>
+        
+        <div class="version-card">
+            <div class="version-title">
+                <h2>v1.0.0 - Versión Inicial</h2>
+                <div>
+                    <span class="version-tag">Publicado</span>
+                    <span class="status status-prod">En Producción</span>
+                </div>
+            </div>
+            <p><strong>Fecha:</strong> Enero 2024</p>
+            <div class="features">
+                <div class="feature-item">
+                    <span class="feature-type feature-added">➕</span>
+                    Sistema de gestión de empleados
+                </div>
+                <div class="feature-item">
+                    <span class="feature-type feature-added">➕</span>
+                    Dashboard administrativo
+                </div>
+                <div class="feature-item">
+                    <span class="feature-type feature-added">➕</span>
+                    Autenticación y roles de usuario
+                </div>
+                <div class="feature-item">
+                    <span class="feature-type feature-added">➕</span>
+                    API REST con Node.js y SQLite
+                </div>
+            </div>
+        </div>
+        
+        <div class="version-card">
+            <div class="version-title">
+                <h2>Roadmap 2024</h2>
+            </div>
+            <div class="features">
+                <div class="feature-item">
+                    <strong>Q1:</strong> Módulo de nómina básica
+                </div>
+                <div class="feature-item">
+                    <strong>Q2:</strong> Sistema de evaluaciones de desempeño
+                </div>
+                <div class="feature-item">
+                    <strong>Q3:</strong> Módulo de reclutamiento (ATS)
+                </div>
+                <div class="feature-item">
+                    <strong>Q4:</strong> App móvil y reportes avanzados
+                </div>
+            </div>
+        </div>
+        
+        <a href="index.html" class="back-btn">← Volver al Sistema</a>
+    </div>
+</body>
+</html>

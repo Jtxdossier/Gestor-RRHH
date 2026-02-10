@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login | HR Pro Suite</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #2c3e50, #4a6491);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .login-container {
+            background: white;
+            width: 100%;
+            max-width: 400px;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+        }
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .logo h1 {
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+        .form-group input:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+        .login-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .login-btn:hover {
+            transform: translateY(-2px);
+        }
+        .demo-credentials {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+        .error {
+            background: #fdeaea;
+            color: #e74c3c;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo">
+            <h1>
+                <i class="fas fa-building"></i>
+                HR Pro Suite
+            </h1>
+            <p style="color: #7f8c8d; margin-top: 5px;">Sistema Profesional de RRHH</p>
+        </div>
+        
+        <div id="error-message" class="error"></div>
+        
+        <div class="form-group">
+            <label for="email"><i class="fas fa-envelope"></i> Email</label>
+            <input type="email" id="email" placeholder="admin@empresa.com" value="admin@rrhh.com">
+        </div>
+        
+        <div class="form-group">
+            <label for="password"><i class="fas fa-lock"></i> Contraseña</label>
+            <input type="password" id="password" placeholder="••••••••" value="Admin123!">
+        </div>
+        
+        <button class="login-btn" onclick="login()">
+            <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
+        </button>
+        
+        <div class="demo-credentials">
+            <p><strong>Credenciales de demo:</strong></p>
+            <p>Email: <code>admin@rrhh.com</code></p>
+            <p>Contraseña: <code>Admin123!</code></p>
+        </div>
+    </div>
+    
+    <script>
+        const API_URL = 'https://hr-system-backend-n8xk.onrender.com/api';
+        
+        async function login() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const errorEl = document.getElementById('error-message');
+            
+            // Mostrar loading
+            const btn = document.querySelector('.login-btn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Conectando...';
+            btn.disabled = true;
+            
+            try {
+                const response = await fetch(API_URL + '/login', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ email, password })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    // Login exitoso - redirigir al dashboard
+                    localStorage.setItem('hr_token', data.token);
+                    localStorage.setItem('hr_user', JSON.stringify(data.user));
+                    window.location.href = 'index.html';
+                } else {
+                    // Error de credenciales
+                    errorEl.textContent = '❌ ' + data.message;
+                    errorEl.style.display = 'block';
+                }
+            } catch (error) {
+                // Error de conexión
+                errorEl.textContent = '❌ Error de conexión con el servidor';
+                errorEl.style.display = 'block';
+                console.error('Login error:', error);
+            } finally {
+                // Restaurar botón
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        }
+        
+        // Permitir login con Enter
+        document.getElementById('password').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') login();
+        });
+        
+        // Verificar si ya está logueado
+        window.addEventListener('DOMContentLoaded', function() {
+            if (localStorage.getItem('hr_token')) {
+                // Ya tiene token, redirigir al dashboard
+                window.location.href = 'index.html';
+            }
+            
+            // Probar conexión automáticamente
+            fetch(API_URL + '/health')
+                .then(r => r.json())
+                .then(data => {
+                    console.log('✅ Backend conectado:', data);
+                })
+                .catch(err => {
+                    console.error('❌ Backend no disponible:', err);
+                    document.getElementById('error-message').textContent = 
+                        '⚠️ Backend temporalmente no disponible. Usando modo demo.';
+                    document.getElementById('error-message').style.display = 'block';
+                });
+        });
+    </script>
+    
+    <!-- Font Awesome -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+</body>
+</html>

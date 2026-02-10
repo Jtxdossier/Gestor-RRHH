@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Prueba HR System Local</title>
+    <style>
+        body { font-family: Arial; padding: 40px; }
+        .btn { padding: 15px 30px; margin: 10px; background: #0073e6; color: white; 
+               border: none; border-radius: 8px; cursor: pointer; }
+        .result { margin-top: 20px; padding: 20px; background: #f5f7fa; border-radius: 10px; }
+    </style>
+</head>
+<body>
+    <h1>🔧 Prueba HR System Local</h1>
+    
+    <button class="btn" onclick="testBackend()">Probar Backend</button>
+    <button class="btn" onclick="testLogin()">Probar Login</button>
+    <button class="btn" onclick="window.open('frontend/index.html', '_blank')">
+        Abrir Sistema Completo
+    </button>
+    
+    <div id="result" class="result"></div>
+    
+    <script>
+        const API_URL = 'https://hr-system-backend-n8xk.onrender.com/api';
+        
+        async function testBackend() {
+            const result = document.getElementById('result');
+            result.innerHTML = '🔄 Probando backend...';
+            
+            try {
+                const response = await fetch(API_URL + '/health');
+                const data = await response.json();
+                
+                result.innerHTML = `
+                    <h3>✅ Backend funcionando</h3>
+                    <p><strong>URL:</strong> ${API_URL}</p>
+                    <p><strong>Estado:</strong> ${data.message || data.status}</p>
+                    <p><strong>Base de datos:</strong> ${data.database}</p>
+                    <p><strong>Tiempo activo:</strong> ${Math.floor(data.uptime / 60)} minutos</p>
+                `;
+                
+                // Probar automáticamente el login después
+                setTimeout(testLogin, 1000);
+                
+            } catch (error) {
+                result.innerHTML = `
+                    <h3>❌ Error backend</h3>
+                    <p><strong>Error:</strong> ${error.message}</p>
+                    <p><strong>URL intentada:</strong> ${API_URL}/health</p>
+                `;
+            }
+        }
+        
+        async function testLogin() {
+            const result = document.getElementById('result');
+            const previous = result.innerHTML;
+            
+            result.innerHTML = previous + '<br><br>🔄 Probando login...';
+            
+            try {
+                const response = await fetch(API_URL + '/login', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        email: 'admin@rrhh.com',
+                        password: 'Admin123!'
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    result.innerHTML = previous + `
+                        <br><br><h4>✅ Login funcionando</h4>
+                        <p><strong>Usuario:</strong> ${data.user.name}</p>
+                        <p><strong>Rol:</strong> ${data.user.role}</p>
+                    `;
+                } else {
+                    result.innerHTML = previous + `<br><br>❌ Login fallido: ${data.message}`;
+                }
+            } catch (error) {
+                result.innerHTML = previous + `<br><br>❌ Error login: ${error.message}`;
+            }
+        }
+        
+        // Probar automáticamente
+        testBackend();
+    </script>
+</body>
+</html>
